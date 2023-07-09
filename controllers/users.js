@@ -25,7 +25,6 @@ function getUser(req, res) {
       });
     });
 }
-
 function createUser(req, res) {
 
   return User.create({ ...req.body })
@@ -79,7 +78,7 @@ function updateAvatar(req, res) {
     {
       new: true,
       upsert: true,
-    }
+    },
   )
     .then((user) => {
       res.status(201).send({ data: user });
@@ -90,8 +89,9 @@ function updateAvatar(req, res) {
           message: 'Переданы некорректные данные',
         });
       }
-      return res.status(500).send({message: 'Ошибка сервера',
-        });
+      return res.status(500).send({
+        message: 'Ошибка сервера',
+      });
     });
 }
 
