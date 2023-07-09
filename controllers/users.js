@@ -1,15 +1,11 @@
 const User = require('../models/user');
 
-function getUsers(req, res) {
+function getUsers(req, res, next) {
   return User.find({})
     .then((users) => {
       res.status(200).send({ data: users });
     })
-    .catch(() => {
-      return res.status(500).send({
-        message: 'Ошибка сервера'
-      })
-    })
+    .catch(() => next());
 };
 
 function getUser(req, res) {
@@ -19,7 +15,7 @@ function getUser(req, res) {
       res.status(200).send(user);
     })
     .catch((err) => {
-      if(err.name === 'CastError') {
+      if (err.name === 'CastError') {
         return res.status(404).send({
           message: 'Пользователь не найден'
         })
@@ -38,7 +34,7 @@ function createUser(req, res) {
       res.status(201).send({ data: user });
     })
     .catch((err) => {
-      if(err.name === 'ValidationError') {
+      if (err.name === 'ValidationError') {
         return res.status(400).send({
           message: 'Переданы некорректные данные'
         })
@@ -65,7 +61,7 @@ function updateProfile(req, res) {
       res.status(201).send({ data: user });
     })
     .catch((err) => {
-      if(err.name === 'ValidationError' || err.name === 'CastError') {
+      if (err.name === 'ValidationError' || err.name === 'CastError') {
         return res.status(400).send({
           message: 'Переданы некорректные данные'
         })
@@ -92,7 +88,7 @@ function updateAvatar(req, res) {
       res.status(201).send({ data: user });
     })
     .catch((err) => {
-      if(err.name === 'ValidationError' || err.name === 'CastError') {
+      if (err.name === 'ValidationError' || err.name === 'CastError') {
         return res.status(400).send({
           message: 'Переданы некорректные данные'
         })

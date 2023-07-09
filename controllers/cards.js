@@ -1,15 +1,11 @@
 const Card = require('../models/card');
 
-function getCards(req, res) {
+function getCards(req, res, next) {
   return Card.find({})
     .then((cards) => {
       res.status(200).send(cards);
     })
-    .catch(() => {
-      return res.status(500).send({
-        message: 'Ошибка сервера',
-      });
-    });
+    .catch(() => next());
 }
 
 function createCard(req, res) {
@@ -21,7 +17,7 @@ function createCard(req, res) {
       res.status(201).send({ data: card });
     })
     .catch((err) => {
-      if(err.name === 'ValidationError') {
+      if (err.name === 'ValidationError') {
         return res.status(400).send({
           message: 'Переданы некорректные данные'
         })
@@ -44,7 +40,7 @@ function deleteCard(req, res) {
         })
     })
     .catch((err) => {
-      if(err.name === 'CastError') {
+      if (err.name === 'CastError') {
         return res.status(404).send({
           message: 'Карточка не найдена'
         })
@@ -68,7 +64,7 @@ function likeCard(req, res) {
       res.status(200).send('Like');
     })
     .catch((err) => {
-      if(err.name === 'ValidationError' || err.name === 'CastError') {
+      if (err.name === 'ValidationError' || err.name === 'CastError') {
         return res.status(400).send({
           message: 'Переданы некорректные данные'
         })
@@ -92,7 +88,7 @@ function dislikeCard(req, res) {
       res.status(200).send('Dislike');
     })
     .catch((err) => {
-      if(err.name === 'ValidationError' || err.name === 'CastError') {
+      if (err.name === 'ValidationError' || err.name === 'CastError') {
         return res.status(400).send({
           message: 'Переданы некорректные данные'
         })
