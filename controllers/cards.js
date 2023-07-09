@@ -7,13 +7,13 @@ function getCards(req, res) {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: 'Ошибка сервера'
-      })
-    })
-};
+        message: 'Ошибка сервера',
+      });
+    });
+}
 
 function createCard(req, res) {
-  const {name, link} = req.body;
+  const { name, link } = req.body;
   const owner = req.user._id;
 
   return Card.create({name, link, owner})
@@ -109,5 +109,5 @@ module.exports = {
   createCard,
   deleteCard,
   likeCard,
-  dislikeCard,
+  dislikeCard
 };
