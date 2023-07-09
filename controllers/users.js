@@ -19,13 +19,12 @@ function getUser(req, res) {
         return res.status(404).send({
           message: 'Пользователь не найден',
         });
-      } else {
-        return res.status(500).send({
-          message: 'Ошибка сервера',
-        });
       }
-    })
-};
+      return res.status(500).send({
+        message: 'Ошибка сервера',
+      });
+    });
+}
 
 function createUser(req, res) {
 
@@ -38,13 +37,12 @@ function createUser(req, res) {
         return res.status(400).send({
           message: 'Переданы некорректные данные',
         });
-      } else {
-        return res.status(500).send({
-          message: 'Ошибка сервера',
-        });
       }
-    })
-};
+      return res.status(500).send({
+        message: 'Ошибка сервера',
+      });
+    });
+}
 
 function updateProfile(req, res) {
   const { name, about } = req.body;
@@ -65,13 +63,12 @@ function updateProfile(req, res) {
         return res.status(400).send({
           message: 'Переданы некорректные данные',
         });
-      } else {
-        return res.status(500).send({
-          message: 'Ошибка сервера',
-        });
       }
-    })
-};
+      return res.status(500).send({
+        message: 'Ошибка сервера',
+      });
+    });
+}
 
 function updateAvatar(req, res) {
   const { avatar } = req.body;
@@ -81,7 +78,7 @@ function updateAvatar(req, res) {
     { avatar },
     {
       new: true,
-      upsert: true
+      upsert: true,
     }
   )
     .then((user) => {
@@ -92,13 +89,11 @@ function updateAvatar(req, res) {
         return res.status(400).send({
           message: 'Переданы некорректные данные',
         });
-      } else {
-        return res.status(500).send({
-          message: 'Ошибка сервера',
-        });
       }
-    })
-};
+      return res.status(500).send({message: 'Ошибка сервера',
+        });
+    });
+}
 
 module.exports = {
   getUsers,

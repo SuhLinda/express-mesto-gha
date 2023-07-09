@@ -21,13 +21,12 @@ function createCard(req, res) {
         return res.status(400).send({
           message: 'Переданы некорректные данные',
         });
-      } else {
-        return res.status(500).send({
-          message: 'Ошибка сервера',
-        });
       }
-    })
-};
+      return res.status(500).send({
+        message: 'Ошибка сервера',
+      });
+    });
+}
 
 function deleteCard(req, res) {
   const owner = req.user._id;
@@ -44,21 +43,20 @@ function deleteCard(req, res) {
         return res.status(404).send({
           message: 'Карточка не найдена',
         });
-      } else {
-        return res.status(500).send({
-          message: 'Ошибка сервера',
-        });
       }
-    })
-};
+      return res.status(500).send({
+        message: 'Ошибка сервера',
+      });
+    });
+}
 
 function likeCard(req, res) {
   return Card.findByIdAndUpdate(
     req.user._id,
-    {$addToSet: { likes: req.user._id }},
+    { $addToSet: { likes: req.user._id } },
     {
       new: true,
-    }
+    },
   )
     .then(() => {
       res.status(200).send('Like');
@@ -68,21 +66,20 @@ function likeCard(req, res) {
         return res.status(400).send({
           message: 'Переданы некорректные данные',
         });
-      } else {
-        return res.status(500).send({
-          message: 'Ошибка сервера',
-        });
       }
-    })
-};
+      return res.status(500).send({
+        message: 'Ошибка сервера',
+      });
+    });
+}
 
 function dislikeCard(req, res) {
   return Card.findByIdAndUpdate(
     req.user._id,
-    {$pull: { likes: req.user._id }},
+    { $pull: { likes: req.user._id } },
     {
       new: true,
-    }
+    },
   )
     .then(() => {
       res.status(200).send('Dislike');
@@ -92,13 +89,12 @@ function dislikeCard(req, res) {
         return res.status(400).send({
           message: 'Переданы некорректные данные',
         });
-      } else {
-        return res.status(500).send({
-          message: 'Ошибка сервера',
-        });
       }
-    })
-};
+      return res.status(500).send({
+        message: 'Ошибка сервера',
+      });
+    });
+}
 
 module.exports = {
   getCards,
