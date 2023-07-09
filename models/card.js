@@ -6,26 +6,26 @@ const cardSchema = new mongoose.Schema({
     type: String,
     minLength: 2,
     maxLength: 30,
-    required: true
+    required: true,
   },
   link: {
     type: String,
-    required: true
+    required: true,
   },
   owner: {
     ref: User,
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    required: true,
   },
   likes: {
     ref: User,
     type: mongoose.Schema.Types.ObjectId,
     default: [],
-    required: true
+    required: true,
   },
   createAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   }
 })
 

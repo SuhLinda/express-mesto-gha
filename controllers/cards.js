@@ -10,7 +10,7 @@ function getCards(req, res) {
         message: 'Ошибка сервера'
       })
     })
-}
+};
 
 function createCard(req, res) {
   const {name, link} = req.body;
@@ -31,7 +31,7 @@ function createCard(req, res) {
         })
       }
     })
-}
+};
 
 function deleteCard(req, res) {
   const owner = req.user._id;
@@ -54,7 +54,7 @@ function deleteCard(req, res) {
         })
       }
     })
-}
+};
 
 function likeCard(req, res) {
   return Card.findByIdAndUpdate(
@@ -78,7 +78,7 @@ function likeCard(req, res) {
         })
       }
     })
-}
+};
 
 function dislikeCard(req, res) {
   return Card.findByIdAndUpdate(
@@ -102,12 +102,12 @@ function dislikeCard(req, res) {
         })
       }
     })
-}
+};
 
 module.exports = {
   getCards,
   createCard,
   deleteCard,
   likeCard,
-  dislikeCard
-}
+  dislikeCard,
+};

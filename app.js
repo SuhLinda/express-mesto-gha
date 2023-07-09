@@ -28,7 +28,6 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
-})
-app.listen(PORT, () => {
-  console.log(`Application is running on port: ${PORT}`);
 });
+
+app.listen(PORT);

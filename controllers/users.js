@@ -10,7 +10,7 @@ function getUsers(req, res) {
         message: 'Ошибка сервера'
       })
     })
-}
+};
 
 function getUser(req, res) {
   const {id} = req.params;
@@ -29,7 +29,7 @@ function getUser(req, res) {
         })
       }
     })
-}
+};
 
 function createUser(req, res) {
 
@@ -48,7 +48,7 @@ function createUser(req, res) {
         })
       }
     })
-}
+};
 
 function updateProfile(req, res) {
   const {name, about} = req.body;
@@ -75,7 +75,7 @@ function updateProfile(req, res) {
         })
       }
     })
-}
+};
 
 function updateAvatar(req, res) {
   const {avatar} = req.body;
@@ -102,12 +102,12 @@ function updateAvatar(req, res) {
         })
       }
     })
-}
+};
 
 module.exports = {
   getUsers,
   getUser,
   createUser,
   updateProfile,
-  updateAvatar
-}
+  updateAvatar,
+};
