@@ -6,7 +6,7 @@ function getUsers(req, res, next) {
       res.status(200).send({ data: users });
     })
     .catch(() => next());
-};
+}
 
 function getUser(req, res) {
   const { id } = req.params;
@@ -52,7 +52,7 @@ function updateProfile(req, res) {
     {
       new: true,
       upsert: true,
-    }
+    },
   )
     .then((user) => {
       res.status(201).send({ data: user });
@@ -100,5 +100,5 @@ module.exports = {
   getUser,
   createUser,
   updateProfile,
-  updateAvatar
+  updateAvatar,
 };
