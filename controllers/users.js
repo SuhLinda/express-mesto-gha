@@ -25,8 +25,8 @@ function getUser(req, res) {
       });
     });
 }
-function createUser(req, res) {
 
+function createUser(req, res) {
   return User.create({ ...req.body })
     .then((user) => {
       res.status(201).send({ data: user });
