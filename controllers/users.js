@@ -3,9 +3,9 @@ const User = require('../models/user');
 function getUsers(req, res) {
   return User.find({})
     .then((users) => {
-      res.status(200).send({data: users});
+      res.status(200).send({ data: users });
     })
-    .catch((err) => {
+    .catch(() => {
       return res.status(500).send({
         message: 'Ошибка сервера'
       })
@@ -13,7 +13,7 @@ function getUsers(req, res) {
 };
 
 function getUser(req, res) {
-  const {id} = req.params;
+  const { id } = req.params;
   return User.findById(id)
     .then((user) => {
       res.status(200).send(user);
@@ -33,9 +33,9 @@ function getUser(req, res) {
 
 function createUser(req, res) {
 
-  return User.create({...req.body})
+  return User.create({ ...req.body })
     .then((user) => {
-      res.status(201).send({data: user});
+      res.status(201).send({ data: user });
     })
     .catch((err) => {
       if(err.name === 'ValidationError') {
@@ -51,18 +51,18 @@ function createUser(req, res) {
 };
 
 function updateProfile(req, res) {
-  const {name, about} = req.body;
+  const { name, about } = req.body;
 
   return User.findByIdAndUpdate(
     req.user._id,
-    {name, about},
+    { name, about },
     {
       new: true,
       upsert: true
     }
   )
     .then((user) => {
-      res.status(201).send({data: user});
+      res.status(201).send({ data: user });
     })
     .catch((err) => {
       if(err.name === 'ValidationError' || err.name === 'CastError') {
@@ -78,18 +78,18 @@ function updateProfile(req, res) {
 };
 
 function updateAvatar(req, res) {
-  const {avatar} = req.body;
+  const { avatar } = req.body;
 
   return User.findByIdAndUpdate(
     req.user._id,
-    {avatar},
+    { avatar },
     {
       new: true,
       upsert: true
     }
   )
     .then((user) => {
-      res.status(201).send({data: user});
+      res.status(201).send({ data: user });
     })
     .catch((err) => {
       if(err.name === 'ValidationError' || err.name === 'CastError') {

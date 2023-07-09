@@ -5,7 +5,7 @@ function getCards(req, res) {
     .then((cards) => {
       res.status(200).send(cards);
     })
-    .catch((err) => {
+    .catch(() => {
       return res.status(500).send({
         message: 'Ошибка сервера',
       });
@@ -16,9 +16,9 @@ function createCard(req, res) {
   const { name, link } = req.body;
   const owner = req.user._id;
 
-  return Card.create({name, link, owner})
+  return Card.create({ name, link, owner })
     .then((card) => {
-      res.status(201).send({data: card});
+      res.status(201).send({ data: card });
     })
     .catch((err) => {
       if(err.name === 'ValidationError') {
@@ -59,7 +59,7 @@ function deleteCard(req, res) {
 function likeCard(req, res) {
   return Card.findByIdAndUpdate(
     req.user._id,
-    {$addToSet: {likes: req.user._id}},
+    {$addToSet: { likes: req.user._id }},
     {
       new: true
     }
@@ -83,7 +83,7 @@ function likeCard(req, res) {
 function dislikeCard(req, res) {
   return Card.findByIdAndUpdate(
     req.user._id,
-    {$pull: {likes: req.user._id}},
+    {$pull: { likes: req.user._id }},
     {
       new: true
     }
