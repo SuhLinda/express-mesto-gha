@@ -19,12 +19,12 @@ function createCard(req, res) {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         return res.status(400).send({
-          message: 'Переданы некорректные данные'
-        })
+          message: 'Переданы некорректные данные',
+        });
       } else {
         return res.status(500).send({
-          message: 'Ошибка сервера'
-        })
+          message: 'Ошибка сервера',
+        });
       }
     })
 };
@@ -37,17 +37,17 @@ function deleteCard(req, res) {
       Card.deleteOne(card)
         .then(() => {
           res.status(200).send('Карточка удалена');
-        })
+        });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
         return res.status(404).send({
-          message: 'Карточка не найдена'
-        })
+          message: 'Карточка не найдена',
+        });
       } else {
         return res.status(500).send({
-          message: 'Ошибка сервера'
-        })
+          message: 'Ошибка сервера',
+        });
       }
     })
 };
@@ -57,7 +57,7 @@ function likeCard(req, res) {
     req.user._id,
     {$addToSet: { likes: req.user._id }},
     {
-      new: true
+      new: true,
     }
   )
     .then(() => {
@@ -66,12 +66,12 @@ function likeCard(req, res) {
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         return res.status(400).send({
-          message: 'Переданы некорректные данные'
-        })
+          message: 'Переданы некорректные данные',
+        });
       } else {
         return res.status(500).send({
-          message: 'Ошибка сервера'
-        })
+          message: 'Ошибка сервера',
+        });
       }
     })
 };
@@ -81,7 +81,7 @@ function dislikeCard(req, res) {
     req.user._id,
     {$pull: { likes: req.user._id }},
     {
-      new: true
+      new: true,
     }
   )
     .then(() => {
@@ -90,12 +90,12 @@ function dislikeCard(req, res) {
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         return res.status(400).send({
-          message: 'Переданы некорректные данные'
-        })
+          message: 'Переданы некорректные данные',
+        });
       } else {
         return res.status(500).send({
-          message: 'Ошибка сервера'
-        })
+          message: 'Ошибка сервера',
+        });
       }
     })
 };

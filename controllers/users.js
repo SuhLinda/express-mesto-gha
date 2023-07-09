@@ -17,12 +17,12 @@ function getUser(req, res) {
     .catch((err) => {
       if (err.name === 'CastError') {
         return res.status(404).send({
-          message: 'Пользователь не найден'
-        })
+          message: 'Пользователь не найден',
+        });
       } else {
         return res.status(500).send({
-          message: 'Ошибка сервера'
-        })
+          message: 'Ошибка сервера',
+        });
       }
     })
 };
@@ -36,12 +36,12 @@ function createUser(req, res) {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         return res.status(400).send({
-          message: 'Переданы некорректные данные'
-        })
+          message: 'Переданы некорректные данные',
+        });
       } else {
         return res.status(500).send({
-          message: 'Ошибка сервера'
-        })
+          message: 'Ошибка сервера',
+        });
       }
     })
 };
@@ -54,7 +54,7 @@ function updateProfile(req, res) {
     { name, about },
     {
       new: true,
-      upsert: true
+      upsert: true,
     }
   )
     .then((user) => {
@@ -63,12 +63,12 @@ function updateProfile(req, res) {
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         return res.status(400).send({
-          message: 'Переданы некорректные данные'
-        })
+          message: 'Переданы некорректные данные',
+        });
       } else {
         return res.status(500).send({
-          message: 'Ошибка сервера'
-        })
+          message: 'Ошибка сервера',
+        });
       }
     })
 };
@@ -90,12 +90,12 @@ function updateAvatar(req, res) {
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         return res.status(400).send({
-          message: 'Переданы некорректные данные'
-        })
+          message: 'Переданы некорректные данные',
+        });
       } else {
         return res.status(500).send({
-          message: 'Ошибка сервера'
-        })
+          message: 'Ошибка сервера',
+        });
       }
     })
 };
