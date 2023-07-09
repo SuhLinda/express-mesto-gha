@@ -1,6 +1,8 @@
 const express = require('express');
+
 const mongoose = require('mongoose');
-const {PORT = 3000} = process.env;
+
+const { PORT = 3000 } = process.env;
 const path = require('path');
 
 const bodyParser = require('body-parser');
@@ -14,10 +16,10 @@ app.use(bodyParser.json());
 
 app.use((req, res, next) => {
   req.user = {
-    _id: '64a6cc72d902954a3d0b02b1'
-  }
+    _id: '64a6cc72d902954a3d0b02b1',
+  };
   next();
-})
+});
 
 app.use(routesUsers);
 app.use(routesCards);
@@ -25,13 +27,8 @@ app.use(routesCards);
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
   useNewUrlParser: true,
   useCreateIndex: true,
-  useFindAndModify: false
+  useFindAndModify: false,
 })
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Application is running on port: ${PORT}`);
-    })
-  })
-  .catch((res) => {
-    console.log(res);
-  })
+app.listen(PORT, () => {
+  console.log(`Application is running on port: ${PORT}`);
+});
