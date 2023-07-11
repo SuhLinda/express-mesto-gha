@@ -51,10 +51,10 @@ function deleteCard(req, res) {
 
   Card.findById(owner)
     .orFail((err) => {
-      return res.status(ERROR_CODE_STATUS_404).send({
+      res.status(ERROR_CODE_STATUS_404).send({
         message: ERROR_CODE_MESSAGE_CARD_404,
         err,
-      });
+      })
     })
     .then((card) => {
       Card.deleteOne(card)
@@ -64,10 +64,11 @@ function deleteCard(req, res) {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return res.status(ERROR_CODE_STATUS_400).send({
+        res.status(ERROR_CODE_STATUS_400).send({
           message: ERROR_CODE_MESSAGE_400,
           err,
         });
+        return;
       }
       res.status(ERROR_CODE_STATUS_500).send({
         message: ERROR_CODE_MESSAGE_500,
@@ -89,10 +90,11 @@ function likeCard(req, res) {
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        return res.status(ERROR_CODE_STATUS_400).send({
+        res.status(ERROR_CODE_STATUS_400).send({
           message: ERROR_CODE_MESSAGE_400,
           err,
         });
+        return;
       }
       res.status(ERROR_CODE_STATUS_500).send({
         message: ERROR_CODE_MESSAGE_500,
@@ -114,10 +116,11 @@ function dislikeCard(req, res) {
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        return res.status(ERROR_CODE_STATUS_400).send({
+        res.status(ERROR_CODE_STATUS_400).send({
           message: ERROR_CODE_MESSAGE_400,
           err,
         });
+        return;
       }
       res.status(ERROR_CODE_STATUS_500).send({
         message: ERROR_CODE_MESSAGE_500,

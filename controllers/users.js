@@ -26,7 +26,7 @@ function getUser(req, res) {
   const { id } = req.params;
   return User.findById(id)
     .orFail((err) => {
-      return res.status(ERROR_CODE_STATUS_404).send({
+      res.status(ERROR_CODE_STATUS_404).send({
         message: ERROR_CODE_MESSAGE_USER_404,
         err,
       });
@@ -49,10 +49,11 @@ function createUser(req, res) {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return res.status(ERROR_CODE_STATUS_400).send({
+        res.status(ERROR_CODE_STATUS_400).send({
           message: ERROR_CODE_MESSAGE_400,
           err,
         });
+        return;
       }
       res.status(ERROR_CODE_STATUS_500).send({
         message: ERROR_CODE_MESSAGE_500,
@@ -76,10 +77,11 @@ function updateProfile(req, res) {
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        return res.status(ERROR_CODE_STATUS_400).send({
+        res.status(ERROR_CODE_STATUS_400).send({
           message: ERROR_CODE_MESSAGE_400,
           err,
         });
+        return;
       }
       res.status(ERROR_CODE_STATUS_500).send({
         message: ERROR_CODE_MESSAGE_500,
@@ -104,10 +106,11 @@ function updateAvatar(req, res) {
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        return res.status(ERROR_CODE_STATUS_400).send({
+        res.status(ERROR_CODE_STATUS_400).send({
           message: ERROR_CODE_MESSAGE_400,
           err,
         });
+        return;
       }
       res.status(ERROR_CODE_STATUS_500).send({
         message: ERROR_CODE_MESSAGE_500,
