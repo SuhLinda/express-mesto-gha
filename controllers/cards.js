@@ -29,14 +29,15 @@ function createCard(req, res) {
 
   return Card.create({ name, link, owner })
     .then((card) => {
-      return res.status(ERROR_CODE_STATUS_201).send({ data: card });
+      res.status(ERROR_CODE_STATUS_201).send({ data: card });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return res.status(ERROR_CODE_STATUS_400).send({
+        res.status(ERROR_CODE_STATUS_400).send({
           message: ERROR_CODE_MESSAGE_400,
           err,
         });
+        return;
       }
       res.status(ERROR_CODE_STATUS_500).send({
         message: ERROR_CODE_MESSAGE_500,
