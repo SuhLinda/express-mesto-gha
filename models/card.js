@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
-const user = require('./user');
 const validator = require('validator/es');
+const user = require('./user');
 
-const cardSchema = new mongoose.Schema({
+const cardSchema = new mongoose.Schema(
+  {
   name: {
     type: String,
     minLength: [2, 'Минимальная длина поля "name" - 2 знака'],
@@ -38,9 +39,9 @@ const cardSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  },
-  {
-    versionKey: false,
-  });
+},
+{
+  versionKey: false,
+});
 
 module.exports = mongoose.model('card', cardSchema);

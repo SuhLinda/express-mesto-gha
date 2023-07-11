@@ -54,7 +54,7 @@ function deleteCard(req, res) {
       res.status(ERROR_CODE_STATUS_404).send({
         message: ERROR_CODE_MESSAGE_CARD_404,
         err,
-      })
+      });
     })
     .then((card) => {
       Card.deleteOne(card)

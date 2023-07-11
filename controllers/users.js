@@ -35,7 +35,7 @@ function getUser(req, res) {
       res.send(user);
     })
     .catch((err) => {
-      return res.status(ERROR_CODE_STATUS_500).send({
+      res.status(ERROR_CODE_STATUS_500).send({
         message: ERROR_CODE_MESSAGE_500,
         err,
       });

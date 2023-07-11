@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const validator = require('validator/es');
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema(
+  {
   name: {
     type: String,
     minLength: [2, 'Минимальная длина поля "name" - 2 знака'],
@@ -24,9 +25,9 @@ const userSchema = new mongoose.Schema({
     },
   },
 },
-  {
-    versionKey: false,
-  });
+{
+  versionKey: false, 
+});
 
 
 module.exports = mongoose.model('user', userSchema);
