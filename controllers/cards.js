@@ -15,11 +15,11 @@ function getCards(req, res) {
     .then((cards) => {
       res.send(cards);
     })
-    .catch(() => {
+    .catch((err) => {
       res.status(ERROR_CODE_STATUS_500).send({
         message: ERROR_CODE_MESSAGE_500,
         err,
-      })
+      });
     });
 }
 
@@ -29,7 +29,7 @@ function createCard(req, res) {
 
   return Card.create({ name, link, owner })
     .then((card) => {
-      res.status(ERROR_CODE_STATUS_201).send({ data: card });
+      return res.status(ERROR_CODE_STATUS_201).send({ data: card });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -49,7 +49,7 @@ function deleteCard(req, res) {
   const owner = req.user._id;
 
   Card.findById(owner)
-    .orFail(() => {
+    .orFail((err) => {
       return res.status(ERROR_CODE_STATUS_404).send({
         message: ERROR_CODE_MESSAGE_CARD_404,
         err,
