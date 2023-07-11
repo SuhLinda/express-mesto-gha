@@ -1,27 +1,43 @@
 const User = require('../models/user');
+const {
+  ERROR_CODE_STATUS_201,
+  ERROR_CODE_STATUS_400,
+  ERROR_CODE_MESSAGE_400,
+  ERROR_CODE_STATUS_404,
+  ERROR_CODE_MESSAGE_USER_404,
+  ERROR_CODE_STATUS_500,
+  ERROR_CODE_MESSAGE_500,
+} = require('../utils/constants');
 
-function getUsers(req, res, next) {
+function getUsers(req, res) {
   return User.find({})
     .then((users) => {
-      res.status(200).send({ data: users });
+      res.send({ data: users });
     })
-    .catch(() => next());
+    .catch((err) => {
+      res.status(ERROR_CODE_STATUS_500).send({
+        message: ERROR_CODE_MESSAGE_500,
+        err,
+      })
+    });
 }
 
 function getUser(req, res) {
   const { id } = req.params;
   return User.findById(id)
+    .orFail((err) => {
+      return res.status(ERROR_CODE_STATUS_404).send({
+        message: ERROR_CODE_MESSAGE_USER_404,
+        err,
+      });
+    })
     .then((user) => {
-      res.status(200).send(user);
+      res.send(user);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        return res.status(404).send({
-          message: 'Пользователь не найден',
-        });
-      }
-      return res.status(500).send({
-        message: 'Ошибка сервера',
+      return res.status(ERROR_CODE_STATUS_500).send({
+        message: ERROR_CODE_MESSAGE_500,
+        err,
       });
     });
 }
@@ -29,16 +45,17 @@ function getUser(req, res) {
 function createUser(req, res) {
   return User.create({ ...req.body })
     .then((user) => {
-      res.status(201).send({ data: user });
+      res.status(ERROR_CODE_STATUS_201).send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return res.status(400).send({
-          message: 'Переданы некорректные данные',
+        return res.status(ERROR_CODE_STATUS_400).send({
+          message: ERROR_CODE_MESSAGE_400,
+          err,
         });
       }
-      return res.status(500).send({
-        message: 'Ошибка сервера',
+      res.status(ERROR_CODE_STATUS_500).send({
+        message: ERROR_CODE_MESSAGE_500,
       });
     });
 }
@@ -51,20 +68,22 @@ function updateProfile(req, res) {
     { name, about },
     {
       new: true,
-      upsert: true,
+      runValidators: true,
     },
   )
     .then((user) => {
-      res.status(201).send({ data: user });
+      res.send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        return res.status(400).send({
-          message: 'Переданы некорректные данные',
+        return res.status(ERROR_CODE_STATUS_400).send({
+          message: ERROR_CODE_MESSAGE_400,
+          err,
         });
       }
-      return res.status(500).send({
-        message: 'Ошибка сервера',
+      res.status(ERROR_CODE_STATUS_500).send({
+        message: ERROR_CODE_MESSAGE_500,
+        err,
       });
     });
 }
@@ -77,20 +96,21 @@ function updateAvatar(req, res) {
     { avatar },
     {
       new: true,
-      upsert: true,
+      runValidators: true,
     },
   )
     .then((user) => {
-      res.status(201).send({ data: user });
+      res.send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        return res.status(400).send({
-          message: 'Переданы некорректные данные',
+        return res.status(ERROR_CODE_STATUS_400).send({
+          message: ERROR_CODE_MESSAGE_400,
+          err,
         });
       }
-      return res.status(500).send({
-        message: 'Ошибка сервера',
+      res.status(ERROR_CODE_STATUS_500).send({
+        message: ERROR_CODE_MESSAGE_500,
       });
     });
 }
