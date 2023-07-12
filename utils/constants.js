@@ -8,8 +8,6 @@ const ERROR_CODE_MESSAGE_USER_404 = 'Пользователь не найден'
 const ERROR_CODE_STATUS_500 = 500;
 const ERROR_CODE_MESSAGE_500 = 'Ошибка сервера';
 
-
-
 module.exports = {
   ERROR_CODE_MESSAGE_CARD_200,
   ERROR_CODE_STATUS_201,

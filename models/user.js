@@ -19,16 +19,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Необходимо заполнить поле "avatar"'],
       validate: {
-        validator: (url) =>
-          validator.isURL(url),
+        validator: (url) => validator.isURL(url),
         message: 'Введён неккоректный URL',
       },
     },
   },
   {
     versionKey: false,
-  }
-  );
-
+  },
+);
 
 module.exports = mongoose.model('user', userSchema);
