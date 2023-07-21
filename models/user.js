@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema(
         validator: (url) => {
           regExp.test(url);
         },
-        message: 'Введён неккоректный URL',
+        message: 'Введён некорректный URL',
       },
     },
     email: {
@@ -36,7 +36,7 @@ const userSchema = new mongoose.Schema(
       required: [true, 'Необходимо заполнить поле "email"'],
       validate: {
         validator: (email) => validator.isEmail(email),
-        message: 'Введён неккоректный email',
+        message: 'Введён некорректный email',
       },
       unique: true,
     },
