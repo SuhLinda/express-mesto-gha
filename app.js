@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 
 const { PORT = 3000 } = process.env;
 const path = require('path');
+const { errors } = require('celebrate');
 
 const bodyParser = require('body-parser');
 const entrance = require('./routes/auth');
@@ -12,7 +13,6 @@ const routesUsers = require('./routes/users');
 const routesCards = require('./routes/cards');
 const auth = require('./middlewares/auth');
 const errorServerError = require('./middlewares/errorServerError');
-const { errors } = require('celebrate');
 
 const app = express();
 
