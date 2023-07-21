@@ -1,67 +1,92 @@
+const bcrypt = require('bcryptjs');
 const User = require('../models/user');
-const {
-  ERROR_CODE_STATUS_201,
-  ERROR_CODE_STATUS_400,
-  ERROR_CODE_MESSAGE_400,
-  ERROR_CODE_STATUS_404,
-  ERROR_CODE_MESSAGE_USER_404,
-  ERROR_CODE_STATUS_500,
-  ERROR_CODE_MESSAGE_500,
-} = require('../utils/constants');
+const jwt = require('jsonwebtoken');
+const { SALT_QUANTITY } = require('../utils/constants');
+const Success = require('../errors/Success');
+const ErrorBadRequest = require('../errors/ErrorBadRequest');
+const ErrorUnauthorized = require('../errors/ErrorUnauthorized');
+const ErrorNotFound = require('../errors/ErrorNotFound');
+const UserExists = require('../errors/UserExists');
 
-function getUsers(req, res) {
+function getUserMe(req, res, next) {
+  return User.findById(req.user._id)
+    .orFail(() => {
+      throw new ErrorNotFound('Пользователь не найден');
+    })
+    .then((user) => {
+      res.send({ data: user });
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+function getUsers(req, res, next) {
   return User.find({})
     .then((users) => {
       res.send({ data: users });
     })
     .catch((err) => {
-      res.status(ERROR_CODE_STATUS_500).send({
-        message: ERROR_CODE_MESSAGE_500,
-        err,
-      });
+      next(err);
     });
 }
 
-function getUser(req, res) {
+function getUser(req, res, next) {
   const { id } = req.params;
   return User.findById(id)
-    .orFail((err) => {
-      res.status(ERROR_CODE_STATUS_404).send({
-        message: ERROR_CODE_MESSAGE_USER_404,
-        err,
-      });
+    .orFail(() => {
+      throw new ErrorNotFound('Пользователь не найден');
     })
     .then((user) => {
       res.send(user);
     })
     .catch((err) => {
-      res.status(ERROR_CODE_STATUS_500).send({
-        message: ERROR_CODE_MESSAGE_500,
-        err,
-      });
+      next(err);
     });
 }
 
-function createUser(req, res) {
-  return User.create({ ...req.body })
+function createUser(req, res, next) {
+  bcrypt.hash(req.body.password, SALT_QUANTITY)
+    .then((hash) => User.create({
+      ...req.body,
+      password: hash,
+    }))
     .then((user) => {
-      res.status(ERROR_CODE_STATUS_201).send({ data: user });
+      res.send({ data: user });
+      throw new Success('Success');
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(ERROR_CODE_STATUS_400).send({
-          message: ERROR_CODE_MESSAGE_400,
-          err,
-        });
+        next(new ErrorBadRequest('Переданы некорректные данные'));
         return;
       }
-      res.status(ERROR_CODE_STATUS_500).send({
-        message: ERROR_CODE_MESSAGE_500,
-      });
+      next(err);
+      if (err.code === 11000) {
+        next(new UserExists('Такой пользователь существует'));
+      }
+      next(err);
     });
 }
 
-function updateProfile(req, res) {
+function login(req, res, next) {
+  const { email, password } = req.body;
+
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwt.sign(
+        { _id: user._id },
+        'some-secret-key',
+        { expiresIn: '7d' },
+      );
+      res.send({ token });
+    })
+    .catch((err) => {
+      next(new ErrorUnauthorized('Неправильные почта или пароль'));
+      next(err);
+    });
+}
+
+function updateProfile(req, res, next) {
   const { name, about } = req.body;
 
   return User.findByIdAndUpdate(
@@ -77,20 +102,14 @@ function updateProfile(req, res) {
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        res.status(ERROR_CODE_STATUS_400).send({
-          message: ERROR_CODE_MESSAGE_400,
-          err,
-        });
+        next(new ErrorBadRequest('Переданы некорректные данные'));
         return;
       }
-      res.status(ERROR_CODE_STATUS_500).send({
-        message: ERROR_CODE_MESSAGE_500,
-        err,
-      });
+      next(err);
     });
 }
 
-function updateAvatar(req, res) {
+function updateAvatar(req, res, next) {
   const { avatar } = req.body;
 
   return User.findByIdAndUpdate(
@@ -106,22 +125,19 @@ function updateAvatar(req, res) {
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        res.status(ERROR_CODE_STATUS_400).send({
-          message: ERROR_CODE_MESSAGE_400,
-          err,
-        });
+        next(new ErrorBadRequest('Переданы некорректные данные'));
         return;
       }
-      res.status(ERROR_CODE_STATUS_500).send({
-        message: ERROR_CODE_MESSAGE_500,
-      });
+      next(err);
     });
 }
 
 module.exports = {
+  getUserMe,
   getUsers,
   getUser,
   createUser,
+  login,
   updateProfile,
   updateAvatar,
 };

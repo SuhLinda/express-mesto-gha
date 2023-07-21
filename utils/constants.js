@@ -1,21 +1,7 @@
-const ERROR_CODE_MESSAGE_CARD_200 = 'Карточка удалена';
-const ERROR_CODE_STATUS_201 = 201;
-const ERROR_CODE_STATUS_400 = 400;
-const ERROR_CODE_MESSAGE_400 = 'Переданы некорректные данные';
-const ERROR_CODE_STATUS_404 = 404;
-const ERROR_CODE_MESSAGE_CARD_404 = 'Карточка не найдена';
-const ERROR_CODE_MESSAGE_USER_404 = 'Пользователь не найден';
-const ERROR_CODE_STATUS_500 = 500;
-const ERROR_CODE_MESSAGE_500 = 'Ошибка сервера';
+const SALT_QUANTITY = 10;
+const regExp = /https?:\/\/(www.)?[A-Za-z0-9\-._~:\/?#[\]@!$&'()*+,;=]$/;
 
 module.exports = {
-  ERROR_CODE_MESSAGE_CARD_200,
-  ERROR_CODE_STATUS_201,
-  ERROR_CODE_STATUS_400,
-  ERROR_CODE_MESSAGE_400,
-  ERROR_CODE_STATUS_404,
-  ERROR_CODE_MESSAGE_CARD_404,
-  ERROR_CODE_MESSAGE_USER_404,
-  ERROR_CODE_STATUS_500,
-  ERROR_CODE_MESSAGE_500,
+  SALT_QUANTITY,
+  regExp,
 };

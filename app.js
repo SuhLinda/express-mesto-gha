@@ -6,23 +6,25 @@ const { PORT = 3000 } = process.env;
 const path = require('path');
 
 const bodyParser = require('body-parser');
+const entrance = require('./routes/auth');
+
 const routesUsers = require('./routes/users');
 const routesCards = require('./routes/cards');
+const auth = require('./middlewares/auth');
+const errorServerError = require('./middlewares/errorServerError');
+const { errors } = require('celebrate');
 
 const app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '64a6cc72d902954a3d0b02b1',
-  };
-  next();
-});
+app.use(entrance);
+app.use(auth, routesUsers);
+app.use(auth, routesCards);
 
-app.use(routesUsers);
-app.use(routesCards);
+app.use(errors());
+app.use(errorServerError);
 
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
   useNewUrlParser: true,

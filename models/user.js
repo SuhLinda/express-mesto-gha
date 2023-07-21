@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const validator = require('validator/es');
+const { regExp } = require('../utils/constants');
+const ErrorUnauthorized = require('../errors/ErrorUnauthorized');
 
 const userSchema = new mongoose.Schema(
   {
@@ -7,26 +10,62 @@ const userSchema = new mongoose.Schema(
       type: String,
       minLength: [2, 'Минимальная длина поля "name" - 2 знака'],
       maxLength: [30, 'Максимальная длина поля "name" - 30 знаков'],
-      required: [true, 'Необходимо заполнить поле "name"'],
+      default: 'Жак-Ив Кусто',
+      required: false,
     },
     about: {
       type: String,
       minLength: [2, 'Минимальная длина поля "name" - 2 знака'],
       maxLength: [30, 'Максимальная длина поля "name" - 30 знаков'],
-      required: [true, 'Необходимо заполнить поле "about"'],
+      default: 'Исследователь',
+      required: false,
     },
     avatar: {
       type: String,
-      required: [true, 'Необходимо заполнить поле "avatar"'],
+      default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
+      required: false,
       validate: {
-        validator: (url) => validator.isURL(url),
+        validator: (url) => {
+          regExp.test(url);
+        },
         message: 'Введён неккоректный URL',
       },
+    },
+    email: {
+      type: String,
+      required: [true, 'Необходимо заполнить поле "email"'],
+      validate: {
+        validator: (email) => validator.isEmail(email),
+        message: 'Введён неккоректный email',
+      },
+      unique: true,
+    },
+    password: {
+      type: String,
+      minLength: [8, 'Минимальная длина поля "password" - 8 знаков'],
+      required: [true, 'Необходимо заполнить поле "password"'],
+      select: false,
     },
   },
   {
     versionKey: false,
   },
 );
+
+userSchema.statics.findUserByCredentials = function findUserByCredentials(email, password) {
+  return this.findOne({ email }).select('+password')
+    .then((user) => {
+      if (!user) {
+        return Promise.reject(new ErrorUnauthorized('Неправильные почта или пароль'));
+      }
+      return bcrypt.compare(password, user.password)
+        .then((matched) => {
+          if (!matched) {
+            return Promise.reject(new ErrorUnauthorized('Неправильные почта или пароль'));
+          }
+          return user;
+        });
+    });
+};
 
 module.exports = mongoose.model('user', userSchema);
