@@ -52,7 +52,7 @@ function createUser(req, res, next) {
       password: hash,
     }))
     .then((user) => {
-      res.status(200).send({ data: user });
+      res.status(201).send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
