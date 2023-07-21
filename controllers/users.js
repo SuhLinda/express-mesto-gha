@@ -52,8 +52,7 @@ function createUser(req, res, next) {
       password: hash,
     }))
     .then((user) => {
-      res.send({ data: user });
-      throw new Success('Success');
+      res.status(200).send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
