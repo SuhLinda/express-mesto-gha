@@ -9,11 +9,11 @@ const validationUserId = celebrate({
 
 const validationCreateUser = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30).required(),
-    about: Joi.string().min(2).max(30).required(),
-    avatar: Joi.string().uri().regex(regExp).required(),
-    email: Joi.string().email().required(),
-    password: Joi.string().min(8).required(),
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string().uri().regex(regExp),
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
   }),
 });
 
