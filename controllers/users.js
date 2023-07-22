@@ -51,7 +51,7 @@ function createUser(req, res, next) {
       password: hash,
     }))
     .then((user) => {
-      res.send({
+      res.status(201).send({
         _id: user._id,
         email: user.email,
         name: user.name,
@@ -61,7 +61,7 @@ function createUser(req, res, next) {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return next(new ErrorBadRequest('Переданы некорректные данные'));
+        next(new ErrorBadRequest('Переданы некорректные данные'));
       } else if (err.code === 11000) {
         return next(new ErrorUserExists('Пользователь с таким email существует'));
       } else {
