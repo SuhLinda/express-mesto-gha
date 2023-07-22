@@ -55,15 +55,16 @@ function createUser(req, res, next) {
 
   bcrypt.hash(password, SALT_QUANTITY)
     .then((hash) => User.create({
+      email,
+      password: hash,
       name,
       about,
       avatar,
-      email,
-      password: hash,
     }))
     .then((user) => {
       res.status(201).send({
         email: user.email,
+        password: '',
         name: user.name,
         about: user.about,
         avatar: user.avatar,
