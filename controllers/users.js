@@ -58,7 +58,6 @@ function createUser(req, res, next) {
         next(new ErrorBadRequest('Переданы некорректные данные'));
         return;
       }
-      next(err);
       if (err.code === 11000) {
         next(new UserExists('Такой пользователь существует'));
       }
