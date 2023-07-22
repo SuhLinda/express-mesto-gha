@@ -2,11 +2,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const { SALT_QUANTITY } = require('../utils/constants');
-const Success = require('../errors/Success');
 const ErrorBadRequest = require('../errors/ErrorBadRequest');
 const ErrorUnauthorized = require('../errors/ErrorUnauthorized');
 const ErrorNotFound = require('../errors/ErrorNotFound');
-const UserExists = require('../errors/UserExists');
+const UserExists = require('../errors/ErrorUserExists');
 
 function getUserMe(req, res, next) {
   return User.findById(req.user._id)
@@ -52,7 +51,7 @@ function createUser(req, res, next) {
       password: hash,
     }))
     .then((user) => {
-      res.status(201).send({ data: user });
+      res.send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
