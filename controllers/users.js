@@ -63,9 +63,9 @@ function createUser(req, res, next) {
       if (err.name === 'ValidationError') {
         next(new ErrorBadRequest('Переданы некорректные данные'));
       } else if (err.code === 11000) {
-        return next(new ErrorUserExists('Пользователь с таким email существует'));
+        next(new ErrorUserExists('Пользователь с таким email существует'));
       } else {
-        return next(err);
+        next(err);
       }
     });
 }
