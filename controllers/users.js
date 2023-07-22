@@ -5,7 +5,6 @@ const { SALT_QUANTITY } = require('../utils/constants');
 const ErrorBadRequest = require('../errors/ErrorBadRequest');
 const ErrorUnauthorized = require('../errors/ErrorUnauthorized');
 const ErrorNotFound = require('../errors/ErrorNotFound');
-//const ErrorUserExists = require('../errors/ErrorUserExists');
 
 function getUserMe(req, res, next) {
   return User.findById(req.user._id)
@@ -45,10 +44,8 @@ function getUser(req, res, next) {
 }
 
 function createUser(req, res, next) {
-
   bcrypt.hash(req.body.password, SALT_QUANTITY)
-    .then((hash) =>
-      User.create({
+    .then((hash) => User.create({
       ...req.body,
       password: hash,
     }))
@@ -63,12 +60,10 @@ function createUser(req, res, next) {
     })
     .catch((err) => {
       if (err.code === 11000) {
-        res.status(409).send({ message: 'Такой пользователь существует' });
-        return;
+        res.status(409).send({ message: 'Пользователь с таким email существует' });
       }
       if (err.name === 'ValidationError') {
         next(new ErrorBadRequest('Переданы некорректные данные'));
-        return;
       }
       next(err);
     });
