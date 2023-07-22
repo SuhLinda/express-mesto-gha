@@ -62,10 +62,9 @@ function createUser(req, res, next) {
       avatar,
     }))
     .then((user) => {
-      res.status(201).send({
+      res.status(200).send({
         _id: user._id,
         email: user.email,
-        password: '',
         name: user.name,
         about: user.about,
         avatar: user.avatar,
