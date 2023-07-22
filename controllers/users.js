@@ -63,6 +63,7 @@ function createUser(req, res, next) {
     }))
     .then((user) => {
       res.status(201).send({
+        _id: user._id,
         email: user.email,
         password: '',
         name: user.name,
@@ -73,6 +74,7 @@ function createUser(req, res, next) {
     .catch((err) => {
       if (err.code === 11000) {
         next(new ErrorUserExists('Такой пользователь существует'));
+        return;
       }
       if (err.name === 'ValidationError') {
         next(new ErrorBadRequest('Переданы некорректные данные'));

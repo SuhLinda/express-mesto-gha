@@ -12,7 +12,7 @@ const entrance = require('./routes/auth');
 const routesUsers = require('./routes/users');
 const routesCards = require('./routes/cards');
 const auth = require('./middlewares/auth');
-const errorServerError = require('./middlewares/errorServerError');
+const handleError = require('./middlewares/handleError');
 
 const app = express();
 
@@ -24,7 +24,7 @@ app.use(auth, routesUsers);
 app.use(auth, routesCards);
 
 app.use(errors());
-app.use(errorServerError);
+app.use(handleError);
 
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
   useNewUrlParser: true,
