@@ -11,19 +11,19 @@ const userSchema = new mongoose.Schema(
       minLength: [2, 'Минимальная длина поля "name" - 2 знака'],
       maxLength: [30, 'Максимальная длина поля "name" - 30 знаков'],
       default: 'Жак-Ив Кусто',
-      required: false,
+      required: true,
     },
     about: {
       type: String,
       minLength: [2, 'Минимальная длина поля "name" - 2 знака'],
       maxLength: [30, 'Максимальная длина поля "name" - 30 знаков'],
       default: 'Исследователь',
-      required: false,
+      required: true,
     },
     avatar: {
       type: String,
       default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
-      required: false,
+      required: true,
       validate: {
         validator: (url) => {
           regExp.test(url);
