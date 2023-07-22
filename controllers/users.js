@@ -5,7 +5,7 @@ const { SALT_QUANTITY } = require('../utils/constants');
 const ErrorBadRequest = require('../errors/ErrorBadRequest');
 const ErrorUnauthorized = require('../errors/ErrorUnauthorized');
 const ErrorNotFound = require('../errors/ErrorNotFound');
-const ErrorUserExists = require('../errors/ErrorUserExists');
+//const ErrorUserExists = require('../errors/ErrorUserExists');
 
 function getUserMe(req, res, next) {
   return User.findById(req.user._id)
@@ -63,7 +63,7 @@ function createUser(req, res, next) {
     })
     .catch((err) => {
       if (err.code === 11000) {
-        next(new ErrorUserExists('Такой пользователь существует'));
+        res.status(409).send({ message: 'Такой пользователь существует' });
         return;
       }
       if (err.name === 'ValidationError') {
