@@ -60,15 +60,13 @@ function createUser(req, res, next) {
       });
     })
     .catch((err) => {
-      if (err.code === 11000 || err.name === 'MongoServerError') {
-        next(new errorUserExists('Пользователь с таким email существует'));
-        return;
+      if (err.code === 11000) {
+        return next(new errorUserExists('Пользователь с таким email существует'));
       }
       if (err.name === 'ValidationError') {
         next(new ErrorBadRequest('Переданы некорректные данные'));
-        return;
       }
-      next(err);
+      return next(err);
     });
 }
 
