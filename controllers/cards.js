@@ -71,7 +71,7 @@ function likeCard(req, res, next) {
       throw new ErrorNotFound('Карточка не найдена');
     })
     .then(() => {
-      res.status(201).send('Like');
+      res.status(201).send({ message: 'Like' });
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
@@ -94,7 +94,7 @@ function dislikeCard(req, res, next) {
       throw new ErrorNotFound('Карточка не найдена');
     })
     .then(() => {
-      res.status(200).send('Dislike');
+      res.status(200).send({ message: 'Dislike' });
     })
     .catch((err) => {
       if (err.name === 'ErrorBadRequest' || err.name === 'CastError') {

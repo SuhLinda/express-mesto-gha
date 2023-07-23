@@ -3,7 +3,7 @@ const { regExp } = require('../utils/constants');
 
 const validationUserId = celebrate({
   params: Joi.object().keys({
-    id: Joi.string().hex().length(24),
+    id: Joi.string().hex().length(24).required(),
   }),
 });
 
