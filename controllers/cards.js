@@ -2,6 +2,7 @@ const Card = require('../models/card');
 const Success = require('../errors/Success');
 const ErrorBadRequest = require('../errors/ErrorBadRequest');
 const ErrorNotFound = require('../errors/ErrorNotFound');
+const ErrorNotSuccess = require('../errors/ErrorNotSuccess');
 
 function getCards(req, res, next) {
   return Card.find({})
@@ -47,7 +48,7 @@ function deleteCard(req, res, next) {
           })
           .catch(next);
       } else {
-        res.status(403).send({ message: 'Вы не являетесь владельцем карточки' });
+        throw new ErrorNotSuccess('Вы не являетесь владельцем карточки');
       }
     })
     .catch((err) => {
@@ -71,7 +72,7 @@ function likeCard(req, res, next) {
       throw new ErrorNotFound('Карточка не найдена');
     })
     .then(() => {
-      res.status(201).send({ message: 'Like' });
+      res.status(200).send({ message: 'Like' });
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
