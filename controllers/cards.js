@@ -1,5 +1,4 @@
 const Card = require('../models/card');
-const SuccessfulCardDeletion = require('../errors/SuccessfulCardDeletion');
 const Success = require('../errors/Success');
 const ErrorBadRequest = require('../errors/ErrorBadRequest');
 const ErrorNotFound = require('../errors/ErrorNotFound');
@@ -72,7 +71,7 @@ function likeCard(req, res, next) {
       throw new ErrorNotFound('Карточка не найдена');
     })
     .then(() => {
-      res.send('Like');
+      res.status(201).send('Like');
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
@@ -95,7 +94,7 @@ function dislikeCard(req, res, next) {
       throw new ErrorNotFound('Карточка не найдена');
     })
     .then(() => {
-      res.send('Dislike');
+      res.status(200).send('Dislike');
     })
     .catch((err) => {
       if (err.name === 'ErrorBadRequest' || err.name === 'CastError') {

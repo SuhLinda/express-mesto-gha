@@ -34,12 +34,12 @@ function getUsers(req, res, next) {
 }
 
 function getUser(req, res, next) {
-  return User.findById(req.params._id)
+  return User.findById(req.params.id)
     .orFail(() => {
       throw new ErrorNotFound('Пользователь не найден');
     })
     .then((user) => {
-      res.send(user);
+      res.status(200).send(user);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
