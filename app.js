@@ -15,6 +15,7 @@ const routesCards = require('./routes/cards');
 const routesNotFound = require('./routes/errorNotFound');
 
 const app = express();
+mongoose.connect(DB_URL);
 
 app.use(helmet());
 app.use(limiter);
@@ -28,7 +29,5 @@ app.use(routesNotFound);
 
 app.use(errors());
 app.use(handleError);
-
-mongoose.connect(DB_URL);
 
 app.listen(PORT);
