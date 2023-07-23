@@ -2,21 +2,20 @@ const express = require('express');
 
 const mongoose = require('mongoose');
 
-const { PORT = 3000 } = process.env;
-const path = require('path');
-const { errors } = require('celebrate');
-
 const bodyParser = require('body-parser');
-const entrance = require('./routes/auth');
 
-const routesUsers = require('./routes/users');
-const routesCards = require('./routes/cards');
+const { errors } = require('celebrate');
 const auth = require('./middlewares/auth');
 const handleError = require('./middlewares/handleError');
 
+const entrance = require('./routes/auth');
+const routesUsers = require('./routes/users');
+const routesCards = require('./routes/cards');
+
+const { PORT = 3000 } = process.env;
+
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 
 app.use(entrance);
