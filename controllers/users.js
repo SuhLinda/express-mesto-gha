@@ -16,7 +16,10 @@ function getUserMe(req, res, next) {
       res.send({ data: user });
     })
     .catch((err) => {
-      next(err);
+      if (err.name === 'CastError') {
+        next(new ErrorBadRequest('Переданы некорректные данные'));
+      }
+      return next(err);
     });
 }
 
@@ -31,8 +34,7 @@ function getUsers(req, res, next) {
 }
 
 function getUser(req, res, next) {
-  const { id } = req.params;
-  return User.findById(id)
+  return User.findById(req.params._id)
     .orFail(() => {
       throw new ErrorNotFound('Пользователь не найден');
     })
@@ -40,7 +42,10 @@ function getUser(req, res, next) {
       res.send(user);
     })
     .catch((err) => {
-      next(err);
+      if (err.name === 'CastError') {
+        next(new ErrorBadRequest('Переданы некорректные данные'));
+      }
+      return next(err);
     });
 }
 

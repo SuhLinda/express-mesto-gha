@@ -10,6 +10,7 @@ const handleError = require('./middlewares/handleError');
 const entrance = require('./routes/auth');
 const routesUsers = require('./routes/users');
 const routesCards = require('./routes/cards');
+const routesNotFound = require('./routes/errorNotFound');
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 app.use(entrance);
 app.use(auth, routesUsers);
 app.use(auth, routesCards);
+app.use(routesNotFound);
 
 app.use(errors());
 app.use(handleError);

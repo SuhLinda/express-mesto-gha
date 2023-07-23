@@ -20,7 +20,7 @@ function createCard(req, res, next) {
 
   return Card.create({ name, link, owner })
     .then((card) => {
-      res.send({ data: card });
+      res.status(201).send({ data: card });
       throw new Success('Карточка создана');
     })
     .catch((err) => {
@@ -44,12 +44,12 @@ function deleteCard(req, res, next) {
       if (owner.toString() === card.owner.toString()) {
         Card.deleteOne(card)
           .then(() => {
-            throw new SuccessfulCardDeletion('Карточка удалена');
-          });
+            res.status(200).send({ message: 'Карточка удалена' });
+          })
+          .catch(next);
       } else {
-        next(new Error('Вы не являетесь владельцем карточки'));
+        res.status(403).send({ message: 'Вы не являетесь владельцем карточки' });
       }
-      next();
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -68,6 +68,9 @@ function likeCard(req, res, next) {
       new: true,
     },
   )
+    .orFail(() => {
+      throw new ErrorNotFound('Карточка не найдена');
+    })
     .then(() => {
       res.send('Like');
     })
@@ -88,6 +91,9 @@ function dislikeCard(req, res, next) {
       new: true,
     },
   )
+    .orFail(() => {
+      throw new ErrorNotFound('Карточка не найдена');
+    })
     .then(() => {
       res.send('Dislike');
     })
